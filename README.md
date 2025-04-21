@@ -23,9 +23,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 return {
   "timseriakov/spamguard.nvim",
-  config = function()
-    require("spamguard").setup()
-  end,
+  opts = {}
 }
 ```
 
