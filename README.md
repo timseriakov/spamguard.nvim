@@ -2,6 +2,10 @@
 
 A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and suggests more efficient alternatives.
 
+## 📽️ Demo (lazyvim/neovide)
+
+![Demo of spamguard.nvim](./demo.gif)
+
 ## ✨ Features
 
 - Detects spam on keys like `j`, `k`, `h`, `l`, `w`
