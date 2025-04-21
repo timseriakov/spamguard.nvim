@@ -59,7 +59,7 @@ function M.setup(user_config)
 		vim.keymap.set("n", key, function()
 			on_key_press(key)
 			return vim.api.nvim_replace_termcodes(key, true, true, true)
-		end, { expr = true, noremap = true })
+		end, { expr = true, noremap = true, silent = true, force = true })
 	end
 
 	vim.api.nvim_create_user_command("SpamStats", function()
