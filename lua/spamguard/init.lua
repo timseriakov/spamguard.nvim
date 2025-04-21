@@ -58,7 +58,7 @@ function M.setup(user_config)
 	for key, _ in pairs(config.keys) do
 		vim.keymap.set("n", key, function()
 			on_key_press(key)
-			return key
+			return vim.api.nvim_replace_termcodes(key, true, true, true)
 		end, { expr = true, noremap = true })
 	end
 
