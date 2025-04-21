@@ -1,58 +1,61 @@
-local spam_stats = {}
-local timers = {}
-local history = {}
-
-local keymap_config = {
-	j = { threshold = 6, suggestion = "use s or f instead of spamming jjjj 😎" },
-	k = { threshold = 6, suggestion = "try 10k instead of spamming kkkk 😎" },
-	h = { threshold = 8, suggestion = "use 10h or b / ge 😎" },
-	l = { threshold = 8, suggestion = "try w or e — it's faster!" },
-	w = { threshold = 5, suggestion = "use s or f — more precise and quicker!" },
-}
-
-local function get_today_key()
-	return os.date("%Y-%m-%d")
-end
-
-local function reset_timer(key)
-	if timers[key] then
-		timers[key]:stop()
-		timers[key]:close()
-		timers[key] = nil
-	end
-end
-
-local function on_key_press(key)
-	if not spam_stats[key] then
-		spam_stats[key] = { count = 0, total = 0 }
-	end
-
-	local today = get_today_key()
-	history[today] = history[today] or {}
-	history[today][key] = (history[today][key] or 0) + 1
-
-	spam_stats[key].count = spam_stats[key].count + 1
-	spam_stats[key].total = spam_stats[key].total + 1
-
-	local config = keymap_config[key]
-	if config and spam_stats[key].count >= config.threshold then
-		vim.schedule(function()
-			vim.notify(string.format("Too much %s — %s", key, config.suggestion), vim.log.levels.WARN)
-		end)
-		spam_stats[key].count = 0
-	end
-
-	reset_timer(key)
-	timers[key] = vim.loop.new_timer()
-	timers[key]:start(1000, 0, function()
-		spam_stats[key].count = 0
-	end)
-end
-
 local M = {}
 
-function M.setup()
-	for key, _ in pairs(keymap_config) do
+local default_config = {
+	keys = {
+		j = { threshold = 6, suggestion = "use s or f instead of spamming jjjj 😎" },
+		k = { threshold = 6, suggestion = "try 10k instead of spamming kkkk 😎" },
+		h = { threshold = 8, suggestion = "use 10h or b / ge 😎" },
+		l = { threshold = 8, suggestion = "try w or e — it's faster! 😎" },
+		w = { threshold = 5, suggestion = "use s or f — more precise and quicker! 😎" },
+	},
+}
+
+function M.setup(user_config)
+	local config = vim.tbl_deep_extend("force", {}, default_config, user_config or {})
+	local spam_stats = {}
+	local timers = {}
+	local history = {}
+
+	local function get_today_key()
+		return os.date("%Y-%m-%d")
+	end
+
+	local function reset_timer(key)
+		if timers[key] then
+			timers[key]:stop()
+			timers[key]:close()
+			timers[key] = nil
+		end
+	end
+
+	local function on_key_press(key)
+		if not spam_stats[key] then
+			spam_stats[key] = { count = 0, total = 0 }
+		end
+
+		local today = get_today_key()
+		history[today] = history[today] or {}
+		history[today][key] = (history[today][key] or 0) + 1
+
+		spam_stats[key].count = spam_stats[key].count + 1
+		spam_stats[key].total = spam_stats[key].total + 1
+
+		local key_cfg = config.keys[key]
+		if key_cfg and spam_stats[key].count >= key_cfg.threshold then
+			vim.schedule(function()
+				vim.notify(string.format("Too much %s — %s", key, key_cfg.suggestion), vim.log.levels.WARN)
+			end)
+			spam_stats[key].count = 0
+		end
+
+		reset_timer(key)
+		timers[key] = vim.loop.new_timer()
+		timers[key]:start(1000, 0, function()
+			spam_stats[key].count = 0
+		end)
+	end
+
+	for key, _ in pairs(config.keys) do
 		vim.keymap.set("n", key, function()
 			on_key_press(key)
 			return key
@@ -63,7 +66,6 @@ function M.setup()
 		local lines = { "📊 Key spam statistics:" }
 
 		local today = get_today_key()
-
 		lines[#lines + 1] = "\n📅 Today:"
 		for key, count in pairs(history[today] or {}) do
 			lines[#lines + 1] = string.format("%s: %d", key, count)
