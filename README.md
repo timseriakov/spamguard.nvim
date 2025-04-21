@@ -22,8 +22,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 return {
-  "timseriakov/spamguard.nvim",
-  opts = {}
+  "timseriakov/spamguard.nvim"
 }
 ```
 
