@@ -21,9 +21,7 @@ A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and sugge
 Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-return {
-  "timseriakov/spamguard.nvim"
-}
+return { "timseriakov/spamguard.nvim" }
 ```
 
 ---
