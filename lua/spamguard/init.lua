@@ -59,10 +59,6 @@ local function is_excluded()
 end
 
 local function on_key_press(key)
-	if is_excluded() then
-		return key
-	end
-
 	if not spam_stats[key] then
 		spam_stats[key] = { count = 0, total = 0 }
 	end
@@ -87,8 +83,6 @@ local function on_key_press(key)
 	timers[key]:start(1000, 0, function()
 		spam_stats[key].count = 0
 	end)
-
-	return key
 end
 
 function M.enable()
@@ -100,7 +94,13 @@ function M.enable()
 	for key, _ in pairs(config.keys) do
 		pcall(vim.keymap.del, "n", key)
 		vim.keymap.set("n", key, function()
-			return vim.api.nvim_replace_termcodes(on_key_press(key), true, true, true)
+			if is_excluded() then
+				return key
+			end
+
+			on_key_press(key)
+			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "n", false)
+			return ""
 		end, { expr = true, noremap = true, silent = true })
 	end
 
