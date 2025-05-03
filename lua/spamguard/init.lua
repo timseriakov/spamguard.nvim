@@ -94,10 +94,7 @@ function M.enable()
 	for key, _ in pairs(config.keys) do
 		pcall(vim.keymap.del, "n", key)
 		vim.keymap.set("n", key, function()
-			vim.notify("[spamguard] pressed " .. key)
-
 			if is_excluded() then
-				vim.notify("[spamguard] excluded by filetype or buffer", vim.log.levels.DEBUG)
 				return key
 			end
 
