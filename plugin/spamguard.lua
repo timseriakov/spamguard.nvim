@@ -4,7 +4,9 @@ vim.api.nvim_create_autocmd("User", {
 		local ok, sg = pcall(require, "spamguard")
 		if ok and sg and not sg.__loaded then
 			sg.setup()
-			sg.enable()
+			vim.defer_fn(function()
+				sg.enable()
+			end, 500)
 		end
 	end,
 })
