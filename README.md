@@ -26,6 +26,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 return {
   "timseriakov/spamguard.nvim",
+  event = "VeryLazy",
   config = function()
     local spamguard = require("spamguard")
     spamguard.setup({
@@ -37,7 +38,9 @@ return {
         w = { threshold = 5, suggestion = "use s or f — more precise and quicker! 😎" },
       },
     })
-    spamguard.enable()
+    vim.schedule(function()
+      spamguard.enable()
+    end)
   end,
 }
 ```
