@@ -1,8 +1,10 @@
 # spamguard.nvim 🛡️
 
+[![Awesome](https://awesome.re/badge.svg)](https://github.com/rockerBOO/awesome-neovim#motion)
+
 A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and suggests more efficient alternatives.
 
-## 📟️ Demo (neovide)
+## 📿️ Demo (neovide)
 
 ![Demo of spamguard.nvim](./demo.gif)
 
@@ -12,7 +14,6 @@ A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and sugge
 - Displays suggestions for more effective motion usage (e.g. `use 10j`)
 - Tracks daily and weekly key usage
 - Command `:SpamStats` to view usage stats
-- Command `:SpamStats!` to view usage stats in an editable buffer
 - Fully configurable thresholds and suggestions 🌟
 - Ignores common explorer/file manager filetypes (`neo-tree`, `NvimTree`, etc.)
 - Can be disabled per-buffer with `vim.b.disable_spamguard = true`
@@ -54,7 +55,6 @@ If a key is not listed in your config, it will fall back to the default behavior
 - `:SpamStats` — Show usage stats:
   - 📅 For today
   - 🏓️ For the last 7 days
-- `:SpamStats!` — Show the same stats in a separate editable buffer (markdown view)
 
 ---
 

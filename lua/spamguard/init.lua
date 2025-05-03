@@ -127,18 +127,8 @@ function M.enable()
 			lines[#lines + 1] = string.format("%s: %d", key, count)
 		end
 
-		if opts.bang then
-			local buf = vim.api.nvim_create_buf(false, true)
-			vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-			vim.api.nvim_set_current_buf(buf)
-			vim.bo[buf].filetype = "markdown"
-			vim.bo[buf].bufhidden = "wipe"
-		else
-			for _, line in ipairs(lines) do
-				vim.notify(line, vim.log.levels.INFO, { title = "SpamStats", replace = false })
-			end
-		end
-	end, { bang = true })
+		vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO, { title = "SpamStats" })
+	end, {})
 end
 
 return M
