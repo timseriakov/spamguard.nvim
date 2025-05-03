@@ -98,9 +98,10 @@ function M.enable()
 	enabled = true
 
 	for key, _ in pairs(config.keys) do
+		pcall(vim.keymap.del, "n", key)
 		vim.keymap.set("n", key, function()
 			return vim.api.nvim_replace_termcodes(on_key_press(key), true, true, true)
-		end, { expr = true, noremap = true, silent = true, force = true })
+		end, { expr = true, noremap = true, silent = true })
 	end
 
 	vim.api.nvim_create_user_command("SpamStats", function(opts)
