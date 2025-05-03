@@ -26,8 +26,8 @@ jobs:
 
       - name: Run tests
         run: |
-          nvim --headless \\
-            -u NONE \\
-            -c 'set rtp+=tests/mini/mini.nvim' \\
-            -c 'lua dofile("tests/init.lua")' \\
+          nvim --headless -u NONE \
+            -c 'set rtp+=tests/mini/mini.nvim' \
+            -c 'lua dofile("tests/init.lua")' \
+            -c 'sleep 100m' \
             -c 'qa'

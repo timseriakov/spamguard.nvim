@@ -134,7 +134,9 @@ function M.enable()
 			vim.bo[buf].filetype = "markdown"
 			vim.bo[buf].bufhidden = "wipe"
 		else
-			vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO)
+			for _, line in ipairs(lines) do
+				vim.notify(line, vim.log.levels.INFO, { title = "SpamStats", replace = false })
+			end
 		end
 	end, { bang = true })
 end
