@@ -10,8 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout plugin
         uses: actions/checkout@v4
+
+      - name: Install mini.nvim
+        run: |
+          mkdir -p tests/mini
+          git clone --depth 1 https://github.com/echasnovski/mini.nvim.git tests/mini/mini.nvim
 
       - name: Setup Neovim
         uses: rhysd/action-setup-vim@v1
@@ -21,4 +26,8 @@ jobs:
 
       - name: Run tests
         run: |
-          nvim --headless -u NONE -c 'lua dofile("tests/init.lua")' -c 'qa'
+          nvim --headless \\
+            -u NONE \\
+            -c 'set rtp+=tests/mini/mini.nvim' \\
+            -c 'lua dofile("tests/init.lua")' \\
+            -c 'qa'
