@@ -1,0 +1,24 @@
+name: Neovim Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+
+      - name: Run tests
+        run: |
+          nvim --headless -u NONE -c 'lua dofile("tests/init.lua")' -c 'qa'

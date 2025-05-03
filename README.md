@@ -2,7 +2,7 @@
 
 A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and suggests more efficient alternatives.
 
-## 📽️ Demo (neovide)
+## 📟️ Demo (neovide)
 
 ![Demo of spamguard.nvim](./demo.gif)
 
@@ -12,7 +12,10 @@ A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and sugge
 - Displays suggestions for more effective motion usage (e.g. `use 10j`)
 - Tracks daily and weekly key usage
 - Command `:SpamStats` to view usage stats
-- Fully configurable thresholds and suggestions 🎯
+- Command `:SpamStats!` to view usage stats in an editable buffer
+- Fully configurable thresholds and suggestions 🌟
+- Ignores common explorer/file manager filetypes (`neo-tree`, `NvimTree`, etc.)
+- Can be disabled per-buffer with `vim.b.disable_spamguard = true`
 
 ---
 
@@ -21,20 +24,11 @@ A minimal Neovim plugin that detects excessive key spamming (`jjjjjj`) and sugge
 Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-return { "timseriakov/spamguard.nvim" }
-```
-
----
-
-## ⚙️ Configuration
-
-You can pass custom thresholds and suggestions for specific keys:
-
-```lua
 return {
   "timseriakov/spamguard.nvim",
   config = function()
-    require("spamguard").setup({
+    local spamguard = require("spamguard")
+    spamguard.setup({
       keys = {
         j = { threshold = 6, suggestion = "use s or f instead of spamming jjjj 😎" },
         k = { threshold = 6, suggestion = "try 10k instead of spamming kkkk 😎" },
@@ -43,6 +37,7 @@ return {
         w = { threshold = 5, suggestion = "use s or f — more precise and quicker! 😎" },
       },
     })
+    spamguard.enable()
   end,
 }
 ```
@@ -53,16 +48,22 @@ If a key is not listed in your config, it will fall back to the default behavior
 
 ## 📊 Commands
 
-`:SpamStats` — Show usage stats:
-
-- 📅 For today
-- 🗓️ For the last 7 days
+- `:SpamStats` — Show usage stats:
+  - 📅 For today
+  - 🏓️ For the last 7 days
+- `:SpamStats!` — Show the same stats in a separate editable buffer (markdown view)
 
 ---
 
-## 🧠 Why?
+## 🧠 Disabling for specific buffers
 
-This plugin encourages better navigation habits by gently reminding you to use more efficient motion commands instead of repeatedly mashing navigation keys.
+You can disable `spamguard` in a specific buffer like this:
+
+```lua
+vim.b.disable_spamguard = true
+```
+
+This is useful for excluding special-purpose buffers or floating windows where tracking is not desired.
 
 ---
 

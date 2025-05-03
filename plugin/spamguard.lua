@@ -1,7 +1,10 @@
 vim.api.nvim_create_autocmd("User", {
 	pattern = "VeryLazy",
 	callback = function()
-		require("spamguard").setup()
+		local ok, sg = pcall(require, "spamguard")
+		if ok and sg and not sg.__loaded then
+			sg.setup()
+			sg.enable()
+		end
 	end,
 })
-
