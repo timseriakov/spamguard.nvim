@@ -51,7 +51,7 @@ local function is_excluded()
 	end
 	local ft = vim.bo.filetype
 	for _, excluded in ipairs(config.excluded_filetypes or {}) do
-		if ft == excluded then
+		if ft == excluded or ft:match("^" .. excluded) then
 			return true
 		end
 	end
